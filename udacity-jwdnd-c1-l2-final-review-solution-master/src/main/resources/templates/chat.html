@@ -1,0 +1,24 @@
+<form th:object="${chatForm}" method="post" action="#" th:action="@{/chat}">
+<label for="username">Username:</label>
+<input id="username" type="text" th:field="*{username}">
+<label for="messageText">Message Text:</label>
+<input id="messageText" type="text" th:field="*{messageText}">
+<label for="messageType">Message Type: </label>
+<select id="messageType" th:field="*{messageType}">
+ <option selected value="Say">Say</option>
+ <option value="Shout">Shout</option>
+ <option value="Whisper">Whisper</option>
+</select>
+<input type="submit">
+</form>
+
+<div>
+  <h2>Chat History</h2>
+  <div th:if="${#lists.isEmpty(chatMessages)}">
+    <p>No messages yet.</p>
+  </div>
+  <div th:each="chatMessage : ${chatMessages}">
+    <strong th:text="${chatMessage.username}">username</strong>:
+    <span th:text="${chatMessage.messageText}">message text</span>
+  </div>
+</div>
