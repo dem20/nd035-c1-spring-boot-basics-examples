@@ -1,16 +1,21 @@
 package com.udacity.jwdnd.c1.review.service;
 
+import com.udacity.jwdnd.c1.review.mapper.MessageMapper;
 import com.udacity.jwdnd.c1.review.model.ChatForm;
 import com.udacity.jwdnd.c1.review.model.ChatMessage;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class MessageService {
-    private List<ChatMessage> chatMessages;
+    // private List<ChatMessage> chatMessages;
+    private MessageMapper messageMapper;
+
+    public MessageService(MessageMapper messageMapper) {
+        this.messageMapper = messageMapper;
+    }
 
 //    no longer needed
 //
@@ -31,27 +36,27 @@ public class MessageService {
     @PostConstruct
     public void postConstruct() {
         System.out.println("Creating MessageService bean");
-        this.chatMessages = new ArrayList<>();
+        // this.chatMessages = new ArrayList<>();
     }
 
-    public void addMessage(ChatForm chatForm) {
+    public void addMessage(ChatForm chatForm, String username) {
         ChatMessage newMessage = new ChatMessage();
-        newMessage.setUsername(chatForm.getUsername());
+        newMessage.setUsername(username);
         switch (chatForm.getMessageType()) {
             case "Say":
-                newMessage.setMessage(chatForm.getMessageText());
+                newMessage.setMessagetext(chatForm.getMessageText());
                 break;
             case "Shout":
-                newMessage.setMessage(chatForm.getMessageText().toUpperCase());
+                newMessage.setMessagetext(chatForm.getMessageText().toUpperCase());
                 break;
             case "Whisper":
-                newMessage.setMessage(chatForm.getMessageText().toLowerCase());
+                newMessage.setMessagetext(chatForm.getMessageText().toLowerCase());
                 break;
         }
-        this.chatMessages.add(newMessage);
+        this.messageMapper.insert(newMessage);
     }
 
     public List<ChatMessage> getChatMessages() {
-        return chatMessages;
+        return this.messageMapper.getAllMessages();
     }
 }

@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS USERS (
+    userid INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(20),
+    salt VARCHAR(255),
+    password VARCHAR(255),
+    firstname VARCHAR(20),
+    lastname VARCHAR(20)
+);
+
+CREATE TABLE IF NOT EXISTS MESSAGES (
+    messageid INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    messagetext VARCHAR(255) NOT NULL
+);

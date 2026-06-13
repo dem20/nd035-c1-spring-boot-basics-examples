@@ -2,14 +2,15 @@ package com.udacity.jwdnd.c1.review.controller;
 
 import com.udacity.jwdnd.c1.review.model.ChatForm;
 import com.udacity.jwdnd.c1.review.service.MessageService;
+
+import java.security.Principal;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/chat")
@@ -28,8 +29,9 @@ public class ChatController {
     }
 
     @PostMapping
-    public String postChatMessage(ChatForm chatForm, Model model) {
-        this.messageService.addMessage(chatForm);
+    public String postChatMessage(ChatForm chatForm, Model model, Principal principal) {
+        String username = principal.getName();
+        this.messageService.addMessage(chatForm, username);
         chatForm.setMessageText("");
         model.addAttribute("chatMessages", this.messageService.getChatMessages());
         return "chat";
